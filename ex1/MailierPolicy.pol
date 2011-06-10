@@ -1,0 +1,19 @@
+(define-policy mailer-policy ()
+ :vars (addr action)
+ :action
+ ((allow (event :type :invokevirtual
+                :name "sendMail"
+                :arg ("java.lang.String" "java.lang.String" "java.lang.String")
+                :result :void
+                :data ((addr (:arg 0))))
+         :if-preceded-by
+         (event :type :invokevirtual
+                :name "doQuery"
+                :arg ("Action")
+                :result :void
+	        :data ((action (:arg 0))))))
+ :dependent
+ ((embed-included-object-p addr action))
+ )
+
+ 

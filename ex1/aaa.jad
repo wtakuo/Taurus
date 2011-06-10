@@ -1,0 +1,72 @@
+// Decompiled by Jad v1.5.8c. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.geocities.com/kpdus/jad.html
+// Decompiler options: packimports(3) 
+// Source File Name:   MailingAgent.java
+
+
+class MailingAgent
+    implements MailApp
+{
+
+    MailingAgent()
+    {
+    }
+
+    public void setMailer(Mailer mailer)
+    {
+        mailer_ = mailer;
+    }
+
+    public String getFromAddr()
+        throws Exception
+    {
+        return "etsuya@anzen.is.titech.ac.jp";
+    }
+
+    public void run()
+        throws Exception
+    {
+        String s = mailer_.getUserName();
+        String s1 = mailer_.getCalendar().getToday();
+        doMailing(s, s1);
+        String s4 = "....";
+        String s3 = "hi!";
+        String s2 = "akira@psg.cs.titech.ac.jp";
+        Mailer mailer = mailer_;
+        MailerPolicyObserver.getObserver().observe_sendMail(mailer, s2, s3, s4);
+        mailer.sendMail(s2, s3, s4);
+    }
+
+    private void doMailing(final String userName, final String plan)
+        throws Exception
+    {
+        for(int i = 0; i < users.length; i++)
+        {
+            final int ii = i;
+            Action action = new Action() {
+
+                public void doIt()
+                {
+                    String s2 = plan;
+                    String s1 = userName + "'s plan";
+                    String s = users[ii];
+                    Mailer mailer1 = mailer_;
+                    MailerPolicyObserver.getObserver().observe_sendMail(mailer1, s, s1, s2);
+                    mailer1.sendMail(s, s1, s2);
+                }
+
+            };
+            Mailer mailer = mailer_;
+            MailerPolicyObserver.getObserver().observe_doQuery(mailer, action);
+            mailer.doQuery(action);
+        }
+
+    }
+
+    private Mailer mailer_;
+    private String users[] = {
+        "kyamada@psg.cs.titech.ac.jp", "tomo@psg.cs.titech.ac.jp", "akira@psg.cs.titech.ac.jp", "yonezawa@is.s.u-tokyo.ac.jp"
+    };
+
+
+}
